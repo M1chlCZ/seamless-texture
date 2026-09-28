@@ -1,0 +1,48 @@
+{
+  "name": "seamless-texture",
+  "version": "0.1.0",
+  "description": "Join opposite texture edges without mirroring or blended pixels.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m1chlcz/seamless-texture.git"
+  },
+  "homepage": "https://github.com/m1chlcz/seamless-texture",
+  "bugs": "https://github.com/m1chlcz/seamless-texture/issues",
+  "keywords": [
+    "texture",
+    "seamless",
+    "tiling",
+    "image",
+    "sharp",
+    "pbr"
+  ],
+  "exports": {
+    ".": "./src/index.mjs",
+    "./sharp": "./src/sharp.mjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "peerDependencies": {
+    "sharp": ">=0.33"
+  },
+  "peerDependenciesMeta": {
+    "sharp": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "sharp": "0.35.4"
+  }
+}
