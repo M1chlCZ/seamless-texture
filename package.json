@@ -1,6 +1,6 @@
 {
   "name": "seamless-texture",
-  "version": "0.1.1-rc.1",
+  "version": "0.1.1",
   "description": "Join opposite texture edges without mirroring or blended pixels.",
   "type": "module",
   "license": "MIT",
@@ -43,6 +43,6 @@
     }
   },
   "devDependencies": {
-    "sharp": "0.35.4"
+    "sharp": "^0.35.5"
   }
 }
