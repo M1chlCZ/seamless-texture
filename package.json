@@ -18,6 +18,9 @@
     "sharp",
     "pbr"
   ],
+  "bin": {
+    "seamless-texture": "bin/seamless-texture.mjs"
+  },
   "exports": {
     ".": "./src/index.mjs",
     "./sharp": "./src/sharp.mjs",
@@ -25,7 +28,9 @@
   },
   "files": [
     "src",
+    "bin",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "engines": {

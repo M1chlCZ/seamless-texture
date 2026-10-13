@@ -3,7 +3,7 @@ import test from "node:test";
 
 import sharp from "sharp";
 
-import { displaceMaterialSurface, seamlessMaterialTile } from "../src/sharp.mjs";
+import { displaceMaterialSurface, materialTilePresets, seamlessMaterialTile } from "../src/sharp.mjs";
 
 test("opposite tile edges meet smoothly while the central print is preserved", async () => {
   const width = 64, height = 64;
@@ -29,4 +29,27 @@ test("flat relief leaves texture pixels and alpha unchanged", async () => {
   const texture = await sharp(pixels, { raw: { width: 32, height: 32, channels: 4 } }).png().toBuffer();
   const displaced = await displaceMaterialSurface(texture, source, 32, 32);
   assert.deepEqual(await sharp(displaced).raw().toBuffer(), pixels);
+});
+
+test("tile presets bundle real options and explicit options win", async () => {
+  const width = 48, height = 48;
+  const pixels = Buffer.alloc(width * height * 4, 255);
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    pixels[(y * width + x) * 4] = x * 5;
+    pixels[(y * width + x) * 4 + 1] = y * 5;
+  }
+  const source = await sharp(pixels, { raw: { width, height, channels: 4 } }).png().toBuffer();
+  const { feather } = materialTilePresets.fabric;
+  assert.deepEqual(await seamlessMaterialTile(source, { preset: "fabric" }),
+    await seamlessMaterialTile(source, { feather }));
+  assert.deepEqual(await seamlessMaterialTile(source, { preset: "fabric", feather: 1 / 12 }),
+    await seamlessMaterialTile(source, { feather: 1 / 12 }));
+  assert.deepEqual(await seamlessMaterialTile(source, { preset: "wood", feather: 1 / 12, size: 64 }),
+    await seamlessMaterialTile(source, { feather: 1 / 12, size: 64 }));
+  const { width: tileWidth } = await sharp(await seamlessMaterialTile(source, { preset: "fabric", size: 64 })).metadata();
+  assert.equal(tileWidth, 64);
+  const defaults = await seamlessMaterialTile(source);
+  assert.deepEqual(defaults, await seamlessMaterialTile(source, { feather: 1 / 8 }));
+  await assert.rejects(seamlessMaterialTile(source, { preset: "silk" }), /unknown preset/);
+  await assert.rejects(seamlessMaterialTile(source, { feather: 0 }), /feather/);
 });
